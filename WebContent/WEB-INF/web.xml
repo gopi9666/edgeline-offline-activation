@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>EdgelineOfflineActivation</display-name>
+  <servlet>
+    <description>Edgeline Offline Activation</description>
+    <display-name>LitmusServlet</display-name>
+    <servlet-name>LitmusServlet</servlet-name>
+    <servlet-class>com.hpe.licensing.edgeline.LitmusServlet</servlet-class>
+    <init-param>
+      <description>Litmus URL</description>
+      <param-name>litmusUrl</param-name>
+      <param-value>http://activate.id/cgi-bin/litmus_mklic</param-value>
+    </init-param>
+    <init-param>
+      <description>Litmus Title</description>
+      <param-name>pageTitle</param-name>
+      <param-value>HPE Edgeline OT Link Activation</param-value>
+    </init-param>
+    <init-param>
+      <description>Litmus Form Field KEY</description>
+      <param-name>litmusKey</param-name>
+      <param-value>key</param-value>
+    </init-param>
+    <init-param>
+      <description>Litmus Form Field HOST ID</description>
+      <param-name>litmusHostId</param-name>
+      <param-value>hostid</param-value>
+    </init-param>
+    <init-param>
+      <description>Support email</description>
+      <param-name>supportEmail</param-name>
+      <param-value>licensing.support@hpe.com</param-value>
+    </init-param>
+    <init-param>
+      <description>Support description</description>
+      <param-name>supportDescription</param-name>
+      <param-value>HPE Licensing Support teams</param-value>
+    </init-param>
+   </servlet>
+  <servlet-mapping>
+    <servlet-name>LitmusServlet</servlet-name>
+    <url-pattern>/activate</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>  
+   <welcome-file>index.html</welcome-file>  
+  </welcome-file-list>  
+</web-app>
