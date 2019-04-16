@@ -28,6 +28,7 @@ import com.hpe.licensing.edgeline.LitmusWebsiteClient.LicenseKeyException;
 
 public class LitmusServlet extends HttpServlet {
 	private static final long serialVersionUID = 6322585781570847737L;
+	private static final String svnId="$Id$";
 
 	// Litmus config
 	private static final int timeoutInSeconds = 10;
@@ -74,6 +75,7 @@ public class LitmusServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		System.out.println(svnId);
 		HttpHost proxy = new HttpHost(LitmusWebsiteClient.ProxyServer,LitmusWebsiteClient.ProxyPort,LitmusWebsiteClient.ProxyMethod);
 		Logger logger = Logger.getLogger(LitmusServlet.class);
 		String url=null;
