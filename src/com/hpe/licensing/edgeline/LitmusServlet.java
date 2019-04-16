@@ -42,9 +42,10 @@ public class LitmusServlet extends HttpServlet {
 	private static final String ACTIV_KEY_REGEX = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$";
 
 
-	private static final String HELP_ACTIV_KEY = "The activation key has been provided to you when registering your product.<br/>It is formatted as &lt;4 digits&gt;-&lt;4 digits&gt;-&lt;4 digits&gt;-&lt;4 digits&gt;";
+	private static final String HELP_ACTIV_KEY = "The activation key has been provided to you when registering your product."
+			+ "<br/>It is formatted as &lt;4 digits&gt;-&lt;4 digits&gt;-&lt;4 digits&gt;-&lt;4 digits&gt;";
 	private static final String HELP_HOST_ID = "For OT Link Platform, the Host ID can be found on the License screen under the System Option menu."
-			+ "<br/>For Workload Orchestrator, type hosted at the command prompt on the system where Workload Orchestrator is running.";
+			+ "<br/>For Workload Orchestrator, the Host ID can be found by typing &quot;hosted&quot; at the command prompt on the system where Workload Orchestrator is running.";
 
 	
 	private static final String HTML_JAVASCRIPT = "./ot.js.html";
