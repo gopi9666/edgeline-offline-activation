@@ -59,8 +59,6 @@ public class LitmusServlet extends HttpServlet {
 	private static final String PROP_TITLE = "pageTitle";
 	private static final String PROP_FORM_FIELD_HOST = "litmusHostId";
 	private static final String PROP_FORM_FIELD_KEY = "litmusKey";
-	private static final String PROP_SUPPORT_EMAIL = "supportEmail";
-	private static final String PROP_SUPPORT_NAME = "supportDescription";
 
 
 	
@@ -69,8 +67,11 @@ public class LitmusServlet extends HttpServlet {
 	private String title="HPE Edgeline Offline Activation";
 	private String form_field_hostid="hostid";
 	private String form_field_key="key";
-	private String help_link = "<a href='mailto:licensing.support@hpe.com'>HPE Licensing Support teams</a>";
-	private String error_help_text = "If this error persists, please contact "+help_link+".";
+	private String error_help_text = "<br><br>If this error persists, please get in touch with your local HPE Licensing Support team:</p>"
+			+ "<ul>"
+			+ "<li><a href='mailto:licensing.emea@hpe.com'>European regions </a></li>"
+			+ "<li><a href='mailto:licensing.ams@hpe.com'>America, Canada and Latin America regions </a></li>"
+			+ "<li><a href='mailto:licensing.apj@hpe.com'>Asia Pacific regions </a></li>";
 
 
 	@Override
@@ -80,8 +81,6 @@ public class LitmusServlet extends HttpServlet {
 		HttpHost proxy = new HttpHost(LitmusWebsiteClient.ProxyServer,LitmusWebsiteClient.ProxyPort,LitmusWebsiteClient.ProxyMethod);
 		Logger logger = Logger.getLogger(LitmusServlet.class);
 		String url=null;
-		String supportEmail=null;
-		String supportName=null;
 		
 		ServletConfig config = getServletConfig(); 
 		@SuppressWarnings("rawtypes")
@@ -94,26 +93,19 @@ public class LitmusServlet extends HttpServlet {
 		      if(PROP_TITLE.equals(name)) title=value;
 		      if(PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
 		      if(PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
-		      if(PROP_SUPPORT_EMAIL.equals(name)) supportEmail=value;
-		      if(PROP_SUPPORT_NAME.equals(name)) supportName=value;
 		      logger.info("Config|"+name+"=["+value+"]");
 	    }
 	    if(isBlank(url)) throw new ServletException("Could not load configuration: no value for ["+PROP_REMOTE_URL+"]");
-	    if(!isBlank(supportName)&&!isBlank(supportEmail)){
-	    	 help_link = "<a href='mailto:"+supportEmail+"'>"+supportName+"</a>";
-	    	 error_help_text = "If this error persists, please contact "+help_link+".";
-	    }
 	    try {
 	    	System.out.println("Initialising LitmusWebsiteClient ["+url+"] ["+proxy+"] ["+timeoutInSeconds+"][ ["+logger+"]");
 	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger);
 	    } catch (RuntimeException shouldNotHappen){
 	    	System.err.println(shouldNotHappen.getMessage());
 	    	shouldNotHappen.printStackTrace();
-	    }catch (Exception shouldNotHappenEither){
+	    } catch (Exception shouldNotHappenEither){
 	    	System.err.println(shouldNotHappenEither.getMessage());
 	    	shouldNotHappenEither.printStackTrace();
 	    } 
-
 	}
 	
 	@Override

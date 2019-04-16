@@ -26,16 +26,6 @@
       <param-name>litmusHostId</param-name>
       <param-value>hostid</param-value>
     </init-param>
-    <init-param>
-      <description>Support email</description>
-      <param-name>supportEmail</param-name>
-      <param-value>licensing.support@hpe.com</param-value>
-    </init-param>
-    <init-param>
-      <description>Support description</description>
-      <param-name>supportDescription</param-name>
-      <param-value>HPE Licensing Support teams</param-value>
-    </init-param>
    </servlet>
   <servlet-mapping>
     <servlet-name>LitmusServlet</servlet-name>
