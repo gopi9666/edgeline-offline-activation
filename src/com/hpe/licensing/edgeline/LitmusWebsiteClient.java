@@ -41,7 +41,7 @@ public class LitmusWebsiteClient {
 
 	// Transaction traces
 	private static final String logFilenamePrefix="/opt/sasuapps/slm/log/litmus/litmus.";
-	private static final String logFilenameWeek="yyyy.ww";
+	private static final String logFilenameWeek="YYYY.ww";
 	private static final String logDateFormat="yyyyMMdd|HH:mm:ss";
 	private static final SimpleDateFormat logFilenameSdf = new SimpleDateFormat(logFilenameWeek);
 	private static final SimpleDateFormat logSdf = new SimpleDateFormat(logDateFormat);
@@ -62,6 +62,20 @@ public class LitmusWebsiteClient {
 		debug(client,"5690-1256-5876-0714","11aabb22cc33");
 		debug(client,"5691-1256-8806-1402","11aabb22cc44");
 		debug(client,"5692-1256-0266-6458","11aabb22cc44");
+		
+		/*
+		@SuppressWarnings("deprecation")
+		Date dt = new Date(118, 11, 20);
+		System.out.println(""+logFilenameSdf.format(dt));
+		dt = new Date(118, 11, 25);
+		System.out.println(""+logFilenameSdf.format(dt));
+		dt = new Date(118, 11, 31);
+		System.out.println(""+logFilenameSdf.format(dt));
+		dt = new Date(119, 0, 1);
+		System.out.println(""+logFilenameSdf.format(dt));
+		dt = new Date(119, 0, 7);
+		System.out.println(""+logFilenameSdf.format(dt));
+		*/
 		System.out.println("END");
 	}
 	
@@ -153,7 +167,7 @@ public class LitmusWebsiteClient {
 		if (body.contains(LITMUS_ERROR_CREATE_LICENSE)) {
 			//<html><body><h3>Error creating license. status=-1021</h3><h5>Activation key not found in database</h5>RLM Activation Pro server version 13.0BL2 (actver=13.0BL2)	<br>Activation key used: key</body></html>
 			logger.error(body);
-			StringTokenizer multiTokenizer = new StringTokenizer(body.replace("</h5>", "<h5>").replace("<h5>", "£"), "£");
+			StringTokenizer multiTokenizer = new StringTokenizer(body.replace("</h5>", "<h5>").replace("<h5>", "ï¿½"), "ï¿½");
 			String msg=null;
 			String item=multiTokenizer.nextToken();
 			while (multiTokenizer.hasMoreTokens())

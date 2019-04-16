@@ -14,7 +14,7 @@
     <init-param>
       <description>Litmus Title</description>
       <param-name>pageTitle</param-name>
-      <param-value>HPE Edgeline OT Link Activation</param-value>
+      <param-value>HPE Edgeline OT Link Software License Activation</param-value>
     </init-param>
     <init-param>
       <description>Litmus Form Field KEY</description>

@@ -1,7 +1,15 @@
 <form id='+FORM_ID+' onsubmit='return validateForm()' method='POST'>
 <br><table>
-<tr><td>Activation Key:</td><td><input type=text name='+FORM_FIELD_KEY+' id='+FORM_FIELD_KEY+' size=28 value='+KEY_VALUE+'></td><td width='5%'/><td class='note'>+HELP_ACTIV_KEY+</td></tr>
-<tr><td>Host ID: </td><td><input type=text name='+FORM_FIELD_HOSTID+' id='+FORM_FIELD_HOSTID+' size=28 value='+HOSTID_VALUE+'></td><td/><td class='note'>+HELP_HOST_ID+</td></tr>
+<tr><td>Activation Key:</td><td><input type=text name='+FORM_FIELD_KEY+' id='+FORM_FIELD_KEY+' size=28 value='+KEY_VALUE+'></td><td width='5%'/><td class='note'>
+<div class="img__wrap">
+  <img class="img__img" src="img/info-24.png" />
+  <p class="img__description">+HELP_ACTIV_KEY+</p>
+</div></td></tr>
+<tr><td>Host ID: </td><td><input type=text name='+FORM_FIELD_HOSTID+' id='+FORM_FIELD_HOSTID+' size=28 value='+HOSTID_VALUE+'></td><td/><td class='note'>
+<div class="img__wrap">
+  <img class="img__img" src="img/info-24.png" />
+  <p class="img__description">+HELP_HOST_ID+</p>
+</div></td></tr>
 <tr><td/><td><input class='button' type=submit value='Generate' id='+FORM_SUBMIT_ID+' ></td><td/><td/></tr>
 </table>
 </form>
