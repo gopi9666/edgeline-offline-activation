@@ -100,7 +100,16 @@ public class LitmusServlet extends HttpServlet {
 	    	 help_link = "<a href='mailto:"+supportEmail+"'>"+supportName+"</a>";
 	    	 error_help_text = "If this error persists, please contact "+help_link+".";
 	    }
-		this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger);
+	    try {
+	    	System.out.println("Initialising LitmusWebsiteClient ["+url+"] ["+proxy+"] ["+timeoutInSeconds+"][ ["+logger+"]");
+	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger);
+	    } catch (RuntimeException shouldNotHappen){
+	    	System.err.println(shouldNotHappen.getMessage());
+	    	shouldNotHappen.printStackTrace();
+	    }catch (Exception shouldNotHappenEither){
+	    	System.err.println(shouldNotHappenEither.getMessage());
+	    	shouldNotHappenEither.printStackTrace();
+	    } 
 
 	}
 	

@@ -41,7 +41,7 @@ public class LitmusWebsiteClient {
 
 	// Transaction traces
 	private static final String logFilenamePrefix="/opt/sasuapps/slm/log/litmus/litmus.";
-	private static final String logFilenameWeek="YYYY.ww";
+	private static final String logFilenameWeek="yyyy.ww";
 	private static final String logDateFormat="yyyyMMdd|HH:mm:ss";
 	private static final SimpleDateFormat logFilenameSdf = new SimpleDateFormat(logFilenameWeek);
 	private static final SimpleDateFormat logSdf = new SimpleDateFormat(logDateFormat);
@@ -88,6 +88,7 @@ public class LitmusWebsiteClient {
 	 * @param logger	Logger
 	 */
 	public LitmusWebsiteClient(String litmusurl, HttpHost proxy, int timeoutinseconds, Logger logger) {
+		System.err.println("initialising LitmusWebsiteClient ["+litmusurl+"]");
 		this.logger = logger;
 		this.url=litmusurl;
 		this.timeout=timeoutinseconds;
