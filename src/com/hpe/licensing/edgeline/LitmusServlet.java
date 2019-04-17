@@ -201,7 +201,7 @@ public class LitmusServlet extends HttpServlet {
 		
 		if(isBlank(licenseKey)){
 			if(!isBlank(error)) {
-				out.println("<div class='error'><h4>An error occurred, we could not create your license key.</h4>");
+				out.println("<div class='error' id='error'><h4>Error:  License key cannot be created.</h4>");
 				out.println("<p>"+truncate(error,50)+"<br/>"+error_help_text+"</p></div>");
 			}
 			lines = readResource(HTML_FORM);

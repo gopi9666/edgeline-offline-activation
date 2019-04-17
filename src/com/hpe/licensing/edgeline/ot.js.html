@@ -7,6 +7,8 @@ function copyToClipboard() {
 	displayInfo('License key copied to clipboard');
 } 
 function validateForm() {
+    var errorMsg = document.getElementById('error');
+	if(errorMsg!=null) errorMsg.innerHTML="";	
 	var k = document.forms['+FORM_ID+']['+FORM_FIELD_KEY+'].value;
 	if (k == ""){
 		displayError('Activation key is required.');
@@ -35,9 +37,9 @@ function displayMessage(msg,timing,color,bkg){
 	  info.style.backgroundColor=bkg;
 	  info.innerHTML='&nbsp;';
 	  setTimeout(function() {info.innerHTML=msg;},300);
-	  setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing);
-	  setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing*2);
-	  setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing*3);
+	  //setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing);
+	  //setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing*2);
+	  //setTimeout(function() {info.innerHTML=info.innerHTML+'.';},timing*3);
 	  setTimeout(function() {info.innerHTML='';},timing*4);
 }
 </script>
