@@ -31,9 +31,9 @@ public class LitmusServlet extends HttpServlet {
 	private static final String svnId="$Id$";
 
 	// Litmus config
-	private static final int timeoutInSeconds = 10;
-	
-	
+	private static int timeoutInSeconds = -1;	
+	private static final int DEF_TIMEOUT = 10;
+
 	// Images, fields, sizes, labels...
 	private static final String FORM_ID = "getLicenseKey";
 	private static final String FORM_SUBMIT_ID = "submit";
@@ -59,6 +59,7 @@ public class LitmusServlet extends HttpServlet {
 	private static final String PROP_TITLE = "pageTitle";
 	private static final String PROP_FORM_FIELD_HOST = "litmusHostId";
 	private static final String PROP_FORM_FIELD_KEY = "litmusKey";
+	private static final String PROP_TIMEOUT = "litmusTimeout";
 
 
 	
@@ -93,7 +94,23 @@ public class LitmusServlet extends HttpServlet {
 		      if(PROP_TITLE.equals(name)) title=value;
 		      if(PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
 		      if(PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
+		      if(PROP_TIMEOUT.equals(name)){
+		    	  try{
+		    		  timeoutInSeconds=Integer.parseInt(value);
+		    	  } catch (Exception ex){
+		    		  timeoutInSeconds=DEF_TIMEOUT;
+		    		  logger.error("Invalid timeout["+value+"], defaulting to "+DEF_TIMEOUT+ "("+ex.getMessage()+")");
+		    	  }
+		    	  if(timeoutInSeconds<0){
+		    		  timeoutInSeconds=DEF_TIMEOUT;
+		    		  logger.error("Invalid timeout["+value+"], defaulting to "+DEF_TIMEOUT);
+		    	  }
+		      }
 		      logger.info("Config|"+name+"=["+value+"]");
+	    }
+	    if(timeoutInSeconds<0){
+	    	timeoutInSeconds=DEF_TIMEOUT;
+	    	logger.error("no timeout value, defaulting to "+DEF_TIMEOUT);
 	    }
 	    if(isBlank(url)) throw new ServletException("Could not load configuration: no value for ["+PROP_REMOTE_URL+"]");
 	    try {
@@ -270,9 +287,9 @@ public class LitmusServlet extends HttpServlet {
         System.out.println("["+new String(DatatypeConverter.parseBase64Binary(download))+"]");
 		byte[] key = decodeKey(download);
 		resp.setContentLength(key.length);
-		String filename="OT_link";
-		if(!isBlank(hostid)) filename+="."+hostid.replace(".", "");
-		filename+=".txt";
+		String filename="OT_Link";
+		if(!isBlank(hostid)) filename+="_"+hostid.replace(".", "");
+		filename+="_license.txt";
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
         ServletOutputStream outStream = resp.getOutputStream();
         System.out.println("["+new String(key)+"]");
