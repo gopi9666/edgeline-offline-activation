@@ -34,10 +34,11 @@ public class LitmusWebsiteClient {
 	private static final String LITMUS_KEY_WRAPPER1 = "<pre>";
 	private static final String LITMUS_KEY_WRAPPER2 = "</pre>";
 	
-	// Proxy
-	public static final String ProxyMethod = "http";
-	public static final String ProxyServer = "web-proxy.houston.hpecorp.net";
-	public static final int ProxyPort= 8088;
+	// Proxy, configured here, just for local testing 
+	// don't use for deployment
+	private static final String ProxyMethod = "http";
+	private static final String ProxyServer = "web-proxy.houston.hpecorp.net";
+	private static final int ProxyPort= 8088;
 
 	// Transaction traces
 	private static final String logFilenamePrefix="/opt/sasuapps/slm/log/litmus/litmus.";

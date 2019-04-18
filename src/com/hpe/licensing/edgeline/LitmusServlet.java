@@ -33,6 +33,12 @@ public class LitmusServlet extends HttpServlet {
 	// Litmus config
 	private static int timeoutInSeconds = -1;	
 	private static final int DEF_TIMEOUT = 10;
+	
+	// proxy
+	private static int proxyPort = -1;	
+	private static String proxyMethod = "";	
+	private static String proxyHost = "";	
+
 
 	// Images, fields, sizes, labels...
 	private static final String FORM_ID = "getLicenseKey";
@@ -55,11 +61,15 @@ public class LitmusServlet extends HttpServlet {
 	private static final String HTML_FORM= "./ot.form.html";
 	private static final String HTML_FOOTER= "./ot.footer.html";
 
+	// web.xml properties
 	private static final String PROP_REMOTE_URL = "litmusUrl";
 	private static final String PROP_TITLE = "pageTitle";
 	private static final String PROP_FORM_FIELD_HOST = "litmusHostId";
 	private static final String PROP_FORM_FIELD_KEY = "litmusKey";
 	private static final String PROP_TIMEOUT = "litmusTimeout";
+	private static final String PROP_PROXY_PORT = "ProxyPort";
+	private static final String PROP_PROXY_HOST = "ProxyHost";
+	private static final String PROP_PROXY_METHOD = "ProxyMethod";
 
 
 	
@@ -79,7 +89,6 @@ public class LitmusServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		System.out.println(svnId);
-		HttpHost proxy = new HttpHost(LitmusWebsiteClient.ProxyServer,LitmusWebsiteClient.ProxyPort,LitmusWebsiteClient.ProxyMethod);
 		Logger logger = Logger.getLogger(LitmusServlet.class);
 		String url=null;
 		
@@ -95,15 +104,19 @@ public class LitmusServlet extends HttpServlet {
 		      if(PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
 		      if(PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
 		      if(PROP_TIMEOUT.equals(name)){
-		    	  try{
-		    		  timeoutInSeconds=Integer.parseInt(value);
-		    	  } catch (Exception ex){
-		    		  timeoutInSeconds=DEF_TIMEOUT;
-		    		  logger.error("Invalid timeout["+value+"], defaulting to "+DEF_TIMEOUT+ "("+ex.getMessage()+")");
-		    	  }
+	    		  timeoutInSeconds=parseInt(value);
 		    	  if(timeoutInSeconds<0){
 		    		  timeoutInSeconds=DEF_TIMEOUT;
 		    		  logger.error("Invalid timeout["+value+"], defaulting to "+DEF_TIMEOUT);
+		    	  }
+		      }
+		      if(PROP_PROXY_HOST.equals(name)) proxyHost=value;
+		      if(PROP_PROXY_METHOD.equals(name)) proxyMethod=value;
+		      if(PROP_PROXY_PORT.equals(name)){
+	    		  proxyPort=parseInt(value);
+		    	  if(proxyPort<0){
+		    		  logger.error("Invalid proxy port["+value+"]");
+		    		  throw new ServletException("Could not load configuration: invalid value["+value+"] for ["+PROP_PROXY_PORT+"]");
 		    	  }
 		      }
 		      logger.info("Config|"+name+"=["+value+"]");
@@ -113,7 +126,16 @@ public class LitmusServlet extends HttpServlet {
 	    	logger.error("no timeout value, defaulting to "+DEF_TIMEOUT);
 	    }
 	    if(isBlank(url)) throw new ServletException("Could not load configuration: no value for ["+PROP_REMOTE_URL+"]");
-	    try {
+	    
+	    // proxy
+	    HttpHost proxy=null;
+		if(!isBlank(proxyHost)&&!isBlank(proxyMethod)&&proxyPort>0){
+			logger.info("Configuring proxy to host=["+proxyHost+"], port=["+proxyPort+"], method=["+proxyMethod+"]");
+			proxy = new HttpHost(proxyHost,proxyPort,proxyMethod);
+		} else logger.warn("no proxy config host=["+proxyHost+"], port=["+proxyPort+"], method=["+proxyMethod+"]");
+	    
+		// init Litmus client
+		try {
 	    	System.out.println("Initialising LitmusWebsiteClient ["+url+"] ["+proxy+"] ["+timeoutInSeconds+"][ ["+logger+"]");
 	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger);
 	    } catch (RuntimeException shouldNotHappen){
@@ -350,6 +372,13 @@ public class LitmusServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 	        }
+	}
+	private static int parseInt(String str){
+		try{
+  		  return Integer.parseInt(str);
+  	  } catch (Exception ex){
+  		  return -1;
+  	  }
 	}
 	
 }
