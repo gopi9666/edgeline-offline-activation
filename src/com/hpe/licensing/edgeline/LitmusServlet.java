@@ -78,11 +78,7 @@ public class LitmusServlet extends HttpServlet {
 	private String title="HPE Edgeline Offline Activation";
 	private String form_field_hostid="hostid";
 	private String form_field_key="key";
-	private String error_help_text = "<br><br>If this error persists, please get in touch with your local HPE Licensing Support team:</p>"
-			+ "<ul>"
-			+ "<li><a href='mailto:licensing.emea@hpe.com'>European regions </a></li>"
-			+ "<li><a href='mailto:licensing.ams@hpe.com'>America, Canada and Latin America regions </a></li>"
-			+ "<li><a href='mailto:licensing.apj@hpe.com'>Asia Pacific regions </a></li>";
+	private String error_help_text = "<br><br>If this error persists, please contact <a href='https://MyEnterpriseLicense.hpe.com/contactus'>HPE Licensing Support teams.</a></p>";
 
 
 	@Override
