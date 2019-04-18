@@ -37,11 +37,6 @@
       <param-value>8088</param-value>
     </init-param>
     <init-param>
-      <description>Proxy Host</description>
-      <param-name>ProxyHost</param-name>
-      <param-value>web-proxy.houston.hpecorp.net</param-value>
-    </init-param>
-    <init-param>
       <description>Litmus Form Field KEY</description>
       <param-name>litmusKey</param-name>
       <param-value>key</param-value>
