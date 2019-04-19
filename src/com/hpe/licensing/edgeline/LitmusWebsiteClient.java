@@ -41,7 +41,6 @@ public class LitmusWebsiteClient {
 	private static final int ProxyPort= 8088;
 
 	// Transaction traces
-	private static final String logFilenamePrefix="/opt/sasuapps/slm/log/litmus/litmus.";
 	private static final String logFilenameWeek="yyyy.ww";
 	private static final String logDateFormat="yyyyMMdd|HH:mm:ss";
 	private static final SimpleDateFormat logFilenameSdf = new SimpleDateFormat(logFilenameWeek);
@@ -58,7 +57,7 @@ public class LitmusWebsiteClient {
 		
 		Logger logger = Logger.getLogger(LitmusWebsiteClient.class);
 		System.out.println("START");
-		LitmusWebsiteClient client = new LitmusWebsiteClient(litmusURL,proxy,timeoutInSeconds,logger);
+		LitmusWebsiteClient client = new LitmusWebsiteClient(litmusURL,proxy,timeoutInSeconds,logger,"/Temp/litmus.");
 		debug(client,"key","123654789a");
 		debug(client,"5690-1256-5876-0714","11aabb22cc33");
 		debug(client,"5691-1256-8806-1402","11aabb22cc44");
@@ -79,6 +78,7 @@ public class LitmusWebsiteClient {
 		*/
 		System.out.println("END");
 	}
+
 	
 
 	/**
@@ -88,12 +88,13 @@ public class LitmusWebsiteClient {
 	 * @param timeoutinseconds	timeout in seconds
 	 * @param logger	Logger
 	 */
-	public LitmusWebsiteClient(String litmusurl, HttpHost proxy, int timeoutinseconds, Logger logger) {
+	public LitmusWebsiteClient(String litmusurl, HttpHost proxy, int timeoutinseconds, Logger logger, String logFilenamePrefix) {
 		System.err.println("initialising LitmusWebsiteClient ["+litmusurl+"]");
 		this.logger = logger;
 		this.url=litmusurl;
 		this.timeout=timeoutinseconds;
 		this.proxy=proxy;
+		this.logFilenamePrefix=logFilenamePrefix;
 	}
 
 	/**
@@ -308,6 +309,7 @@ public class LitmusWebsiteClient {
 	private String url;
 	private int timeout;
 	private HttpHost proxy;
+	private String logFilenamePrefix;
 
 	/**
 	 * Custom exception

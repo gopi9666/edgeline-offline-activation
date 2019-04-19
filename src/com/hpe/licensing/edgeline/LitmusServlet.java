@@ -62,14 +62,15 @@ public class LitmusServlet extends HttpServlet {
 	private static final String HTML_FOOTER= "./ot.footer.html";
 
 	// web.xml properties
-	private static final String PROP_REMOTE_URL = "litmusUrl";
-	private static final String PROP_TITLE = "pageTitle";
-	private static final String PROP_FORM_FIELD_HOST = "litmusHostId";
-	private static final String PROP_FORM_FIELD_KEY = "litmusKey";
-	private static final String PROP_TIMEOUT = "litmusTimeout";
-	private static final String PROP_PROXY_PORT = "ProxyPort";
-	private static final String PROP_PROXY_HOST = "ProxyHost";
-	private static final String PROP_PROXY_METHOD = "ProxyMethod";
+	private static final String WEBXML_PROP_REMOTE_URL = "litmusUrl";
+	private static final String WEBXML_PROP_TITLE = "pageTitle";
+	private static final String WEBXML_PROP_FORM_FIELD_HOST = "litmusHostId";
+	private static final String WEBXML_PROP_FORM_FIELD_KEY = "litmusKey";
+	private static final String WEBXML_PROP_TIMEOUT = "litmusTimeout";
+	private static final String WEBXML_PROP_PROXY_PORT = "ProxyPort";
+	private static final String WEBXML_PROP_PROXY_HOST = "ProxyHost";
+	private static final String WEBXML_PROP_PROXY_METHOD = "ProxyMethod";
+	private static final String WEBXML_PROP_LOG_FILENAME = "litmusLogFilename";
 
 
 	
@@ -87,6 +88,7 @@ public class LitmusServlet extends HttpServlet {
 		System.out.println(svnId);
 		Logger logger = Logger.getLogger(LitmusServlet.class);
 		String url=null;
+		String logFilenamePrefix="";
 		
 		ServletConfig config = getServletConfig(); 
 		@SuppressWarnings("rawtypes")
@@ -95,24 +97,25 @@ public class LitmusServlet extends HttpServlet {
 	    {
 		      String name = (String) e.nextElement();  // returns the <param-name> 
 		      String value = config.getInitParameter(name);  // returns <param-value> 
-		      if(PROP_REMOTE_URL.equals(name)) url=value;
-		      if(PROP_TITLE.equals(name)) title=value;
-		      if(PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
-		      if(PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
-		      if(PROP_TIMEOUT.equals(name)){
+		      if(WEBXML_PROP_REMOTE_URL.equals(name)) url=value;
+		      if(WEBXML_PROP_TITLE.equals(name)) title=value;
+		      if(WEBXML_PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
+		      if(WEBXML_PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
+		      if(WEBXML_PROP_LOG_FILENAME.equals(name)) logFilenamePrefix=value;
+		      if(WEBXML_PROP_TIMEOUT.equals(name)){
 	    		  timeoutInSeconds=parseInt(value);
 		    	  if(timeoutInSeconds<0){
 		    		  timeoutInSeconds=DEF_TIMEOUT;
 		    		  logger.error("Invalid timeout["+value+"], defaulting to "+DEF_TIMEOUT);
 		    	  }
 		      }
-		      if(PROP_PROXY_HOST.equals(name)) proxyHost=value;
-		      if(PROP_PROXY_METHOD.equals(name)) proxyMethod=value;
-		      if(PROP_PROXY_PORT.equals(name)){
+		      if(WEBXML_PROP_PROXY_HOST.equals(name)) proxyHost=value;
+		      if(WEBXML_PROP_PROXY_METHOD.equals(name)) proxyMethod=value;
+		      if(WEBXML_PROP_PROXY_PORT.equals(name)){
 	    		  proxyPort=parseInt(value);
 		    	  if(proxyPort<0){
 		    		  logger.error("Invalid proxy port["+value+"]");
-		    		  throw new ServletException("Could not load configuration: invalid value["+value+"] for ["+PROP_PROXY_PORT+"]");
+		    		  throw new ServletException("Could not load configuration: invalid value["+value+"] for ["+WEBXML_PROP_PROXY_PORT+"]");
 		    	  }
 		      }
 		      logger.info("Config|"+name+"=["+value+"]");
@@ -121,7 +124,7 @@ public class LitmusServlet extends HttpServlet {
 	    	timeoutInSeconds=DEF_TIMEOUT;
 	    	logger.error("no timeout value, defaulting to "+DEF_TIMEOUT);
 	    }
-	    if(isBlank(url)) throw new ServletException("Could not load configuration: no value for ["+PROP_REMOTE_URL+"]");
+	    if(isBlank(url)) throw new ServletException("Could not load configuration: no value for ["+WEBXML_PROP_REMOTE_URL+"]");
 	    
 	    // proxy
 	    HttpHost proxy=null;
@@ -133,7 +136,7 @@ public class LitmusServlet extends HttpServlet {
 		// init Litmus client
 		try {
 	    	System.out.println("Initialising LitmusWebsiteClient ["+url+"] ["+proxy+"] ["+timeoutInSeconds+"][ ["+logger+"]");
-	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger);
+	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger,logFilenamePrefix);
 	    } catch (RuntimeException shouldNotHappen){
 	    	System.err.println(shouldNotHappen.getMessage());
 	    	shouldNotHappen.printStackTrace();

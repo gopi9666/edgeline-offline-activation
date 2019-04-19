@@ -46,6 +46,11 @@
       <param-name>litmusHostId</param-name>
       <param-value>hostid</param-value>
     </init-param>
+    <init-param>
+      <description>Litmus log filename</description>
+      <param-name>litmusLogFilename</param-name>
+      <param-value>/opt/sasuapps/slm/log/litmus/litmus.</param-value>
+    </init-param>
    </servlet>
   <servlet-mapping>
     <servlet-name>LitmusServlet</servlet-name>
