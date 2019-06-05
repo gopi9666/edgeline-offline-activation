@@ -52,8 +52,10 @@ public class LitmusWebsiteClient {
 	
 	public static void main(String[] args) throws ClientProtocolException, IOException {
 		int timeoutInSeconds = 10;
-		String litmusURL = "http://activate.id/cgi-bin/litmus_mklic";
+		String litmusURL = "https://activate.id/cgi-bin/litmus_mklic";
 		HttpHost proxy = new HttpHost(ProxyServer,ProxyPort,ProxyMethod);
+		System.setProperty("javax.net.ssl.trustStore","/Temp/litmus.pkcs12");
+		System.setProperty("javax.net.ssl.trustStorePassword","caramel");
 		
 		Logger logger = Logger.getLogger(LitmusWebsiteClient.class);
 		System.out.println("START");
@@ -117,6 +119,7 @@ public class LitmusWebsiteClient {
 		}
 		
 		CloseableHttpClient httpClient = createClient();
+		
 		HttpPost httpPost = createRequest(key, hostid);
 		logger.debug("Executing request " + httpPost.getRequestLine());
 		String body=executeRequest(httpClient, httpPost);

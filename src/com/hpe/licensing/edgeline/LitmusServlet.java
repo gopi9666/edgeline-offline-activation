@@ -71,6 +71,8 @@ public class LitmusServlet extends HttpServlet {
 	private static final String WEBXML_PROP_PROXY_HOST = "ProxyHost";
 	private static final String WEBXML_PROP_PROXY_METHOD = "ProxyMethod";
 	private static final String WEBXML_PROP_LOG_FILENAME = "litmusLogFilename";
+	private static final String WEBXML_PROP_TRUST_FILENAME = "litmusTrustStoreFile";
+	private static final String WEBXML_PROP_TRUST_PASS = "litmusTrustStorePassword";
 
 
 	
@@ -102,6 +104,10 @@ public class LitmusServlet extends HttpServlet {
 		      if(WEBXML_PROP_FORM_FIELD_HOST.equals(name)) form_field_hostid=value;
 		      if(WEBXML_PROP_FORM_FIELD_KEY.equals(name)) form_field_key=value;
 		      if(WEBXML_PROP_LOG_FILENAME.equals(name)) logFilenamePrefix=value;
+		      if(WEBXML_PROP_TRUST_FILENAME.equals(name)) System.setProperty("javax.net.ssl.trustStore",value);
+		      if(WEBXML_PROP_TRUST_PASS.equals(name)) System.setProperty("javax.net.ssl.trustStorePassword",value);
+
+		      
 		      if(WEBXML_PROP_TIMEOUT.equals(name)){
 	    		  timeoutInSeconds=parseInt(value);
 		    	  if(timeoutInSeconds<0){

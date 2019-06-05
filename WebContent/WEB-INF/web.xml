@@ -14,7 +14,17 @@
     <init-param>
       <description>Litmus URL</description>
       <param-name>litmusUrl</param-name>
-      <param-value>http://activate.id/cgi-bin/litmus_mklic</param-value>
+      <param-value>https://activate.id/cgi-bin/litmus_mklic</param-value>
+    </init-param>
+    <init-param>
+      <description>Litmus TrustStore</description>
+      <param-name>litmusTrustStoreFile</param-name>
+      <param-value>/opt/sasuapps/slm/config/litmus.store</param-value>
+    </init-param>
+    <init-param>
+      <description>Litmus TrustStore password</description>
+      <param-name>litmusTrustStorePassword</param-name>
+      <param-value>caramel</param-value>
     </init-param>
     <init-param>
       <description>Litmus Title</description>
