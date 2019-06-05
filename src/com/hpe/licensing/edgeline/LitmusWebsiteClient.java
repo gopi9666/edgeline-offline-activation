@@ -65,19 +65,6 @@ public class LitmusWebsiteClient {
 		debug(client,"5691-1256-8806-1402","11aabb22cc44");
 		debug(client,"5692-1256-0266-6458","11aabb22cc44");
 		
-		/*
-		@SuppressWarnings("deprecation")
-		Date dt = new Date(118, 11, 20);
-		System.out.println(""+logFilenameSdf.format(dt));
-		dt = new Date(118, 11, 25);
-		System.out.println(""+logFilenameSdf.format(dt));
-		dt = new Date(118, 11, 31);
-		System.out.println(""+logFilenameSdf.format(dt));
-		dt = new Date(119, 0, 1);
-		System.out.println(""+logFilenameSdf.format(dt));
-		dt = new Date(119, 0, 7);
-		System.out.println(""+logFilenameSdf.format(dt));
-		*/
 		System.out.println("END");
 	}
 
