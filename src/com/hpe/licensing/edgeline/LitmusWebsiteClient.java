@@ -59,7 +59,7 @@ public class LitmusWebsiteClient {
 		
 		Logger logger = Logger.getLogger(LitmusWebsiteClient.class);
 		System.out.println("START");
-		LitmusWebsiteClient client = new LitmusWebsiteClient(litmusURL,proxy,timeoutInSeconds,logger,"/Temp/litmus.");
+		LitmusWebsiteClient client = new LitmusWebsiteClient(litmusURL,proxy,timeoutInSeconds,"/Temp/litmus.");
 		debug(client,"key","123654789a");
 		debug(client,"5690-1256-5876-0714","11aabb22cc33");
 		debug(client,"5691-1256-8806-1402","11aabb22cc44");
@@ -77,9 +77,9 @@ public class LitmusWebsiteClient {
 	 * @param timeoutinseconds	timeout in seconds
 	 * @param logger	Logger
 	 */
-	public LitmusWebsiteClient(String litmusurl, HttpHost proxy, int timeoutinseconds, Logger logger, String logFilenamePrefix) {
+	public LitmusWebsiteClient(String litmusurl, HttpHost proxy, int timeoutinseconds, String logFilenamePrefix) {
 		System.err.println("initialising LitmusWebsiteClient ["+litmusurl+"]");
-		this.logger = logger;
+		this.logger = Logger.getLogger(LitmusWebsiteClient.class);
 		this.url=litmusurl;
 		this.timeout=timeoutinseconds;
 		this.proxy=proxy;
@@ -95,7 +95,7 @@ public class LitmusWebsiteClient {
 	 */
 	public String getLicenseKey(String key, String hostid) throws LicenseKeyException  {
 		logger.info("key=["+key+"] hostid=["+hostid+"]");
-		
+				
 		if(key==null||key.trim().length()==0){
 			traceTransaction(key, hostid, "E|key is null/empty");
 			throwError("key is null/empty");

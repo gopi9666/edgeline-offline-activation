@@ -44,6 +44,7 @@ public class LitmusServlet extends HttpServlet {
 	private static final String FORM_ID = "getLicenseKey";
 	private static final String FORM_SUBMIT_ID = "submit";
 	private static final String DOWNLOAD_ID = "download";
+	private static final String FLUSH_ID = "text";
 	private static final String SHORTCUT_ICON = "img/hpe-shortcut.png";
 	private static final String ACTIV_KEY_REGEX = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$";
 
@@ -82,15 +83,16 @@ public class LitmusServlet extends HttpServlet {
 	private String form_field_hostid="hostid";
 	private String form_field_key="key";
 	private String error_help_text = "<br><br>If this error persists, please contact <a href='https://MyEnterpriseLicense.hpe.com/contactus'>HPE Licensing Support teams.</a></p>";
+	private Logger logger;
 
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		System.out.println(svnId);
-		Logger logger = Logger.getLogger(LitmusServlet.class);
 		String url=null;
 		String logFilenamePrefix="";
+		this.logger = Logger.getLogger(LitmusServlet.class);
 		
 		ServletConfig config = getServletConfig(); 
 		@SuppressWarnings("rawtypes")
@@ -142,7 +144,7 @@ public class LitmusServlet extends HttpServlet {
 		// init Litmus client
 		try {
 	    	System.out.println("Initialising LitmusWebsiteClient ["+url+"] ["+proxy+"] ["+timeoutInSeconds+"][ ["+logger+"]");
-	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logger,logFilenamePrefix);
+	    	this.client  = new LitmusWebsiteClient(url, proxy, timeoutInSeconds, logFilenamePrefix);
 	    } catch (RuntimeException shouldNotHappen){
 	    	System.err.println(shouldNotHappen.getMessage());
 	    	shouldNotHappen.printStackTrace();
@@ -156,6 +158,8 @@ public class LitmusServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String download = req.getParameter(DOWNLOAD_ID);
 		String hostid = req.getParameter(form_field_hostid);
+		logger.info("download=["+download+"]");
+		logger.info("hostid=["+hostid+"]");
 		if(!isBlank(download)){
 			downloadKey(resp, hostid,download.trim());
 			return;
@@ -168,31 +172,46 @@ public class LitmusServlet extends HttpServlet {
 		String key = req.getParameter(form_field_key);
 		String hostid = req.getParameter(form_field_hostid);		
 		String download = req.getParameter(DOWNLOAD_ID);
+		String text = req.getParameter(FLUSH_ID);
+		logger.info("key=["+key+"]");
+		logger.info("hostid=["+hostid+"]");
+		logger.info("download=["+download+"]");
+		logger.info("text=["+text+"]");
+		if(!isBlank(text)) download="";
+		
 		if(!isBlank(download)){
 			downloadKey(resp, hostid,download.trim());
 			return;
 		}
 
 		if(isBlank(hostid)||isBlank(key)) {
-			displayPage(resp,null,"All fields are required.",key,hostid);
+			String msg="All fields are required.";
+			if(!isBlank(text)) print(resp,"Error:<br/>"+msg);
+			else displayPage(resp,null,msg,key,hostid);
 			return;
 		}
 		if(this.client==null) {
-			displayPage(resp,null,"Internal error (CLT_INIT)",key,hostid);
+			String msg="Internal error (CLT_INIT)";
+			if(!isBlank(text)) print(resp,"Error:<br/>"+msg);
+			else displayPage(resp,null,msg,key,hostid);
 			return;
 		}
 		if(!key.matches(ACTIV_KEY_REGEX)){
-			displayPage(resp,null,"The activation key is incorrect",key,hostid);
+			String msg="The activation key is incorrect";
+			if(!isBlank(text)) print(resp,"Error:<br/>"+msg);
+			else displayPage(resp,null,msg,key,hostid);
 			return;
 			
 		}
 		String licenseKey = null;
 		try {
 			licenseKey = client.getLicenseKey(key.trim(), hostid.trim());
-			displayPage(resp,licenseKey,null,key,hostid);
+			if(!isBlank(text)) print(resp,licenseKey);
+			else displayPage(resp,licenseKey,null,key,hostid);
 			return;
 		} catch (LicenseKeyException e) {
-			displayPage(resp,null,e.getMessage(),key,hostid);
+			if(!isBlank(text)) print(resp,"Error:<br/>"+e.getMessage());
+			else displayPage(resp,null,e.getMessage(),key,hostid);
 		}
 	}
 	
@@ -211,6 +230,17 @@ public class LitmusServlet extends HttpServlet {
 	 *        
 	************************************************************************/
 	
+	/**
+	 * Prints key or error
+	 * @param resp
+	 * @param content to be printed
+	 * @throws IOException 
+	 */
+	private void print(HttpServletResponse resp, String content) throws IOException {
+		resp.setContentType("text/plain");
+		resp.getWriter().print(content);
+	}
+
 	/**
 	 * Displays the start page with the form
 	 * @param resp HttpServletResponse
